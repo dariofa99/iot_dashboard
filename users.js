@@ -6,7 +6,7 @@ export class User {
      } */
 
     async index() {
-        const response = await fetch('http://iot.local/api/v1/users', {
+        const response = await fetch('http://3.18.87.25/api/v1/users', {
             method: 'GET',
             headers: new Headers({
                 'Content-type': 'application/json',
