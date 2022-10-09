@@ -1,10 +1,21 @@
-import { User } from "./users.js";
-import { Pusher } from "./pusher.js";
-import { Topic } from "./topics.js";
+
+import { User } from "./js/users.js";
+import { Pusher } from "./js/pusher.js";
+import { Topic } from "./js/topics.js";
+import { Dashboard } from "./js/dashboard.js";
 const topic = new Topic();
+const dashboard = new Dashboard();
 
 (function() {
-    const formElement = document.getElementById("myTopicCreateForm");
+var modal = new bootstrap.Modal(document.getElementById("create_dashboard"), {});
+ let btn_create_dashboard = document.getElementById("btn_create_dashboard");
+ btn_create_dashboard.addEventListener("click",function (e) {
+  e.preventDefault();
+  modal.show();
+ })
+
+
+   /*  const formElement = document.getElementById("myTopicCreateForm");
     formElement.addEventListener("submit",async function(e) {  
         e.preventDefault()
         const formData = new FormData(formElement);             
@@ -16,34 +27,23 @@ const topic = new Topic();
         if(conf){
             let response = await topic.deleteAll(); 
         }
-    })
+    }) */
 })();
-const pusher = new Pusher();
-await pusher.on("MyChannel",function(data) {
+const pusher = new Pusher("http://localhost:3000");
+/* await pusher.on("MyChannel",function(data) {
     if(data.topic.topic_name == "mgtic/cpu"){
         drawChart(data.topic);
     }else{
         fillTable(data.response);
     }
-});
+}); */
 await pusher.on("MyChannelDelete",function(data) {
     fillTable(data.response);  
 });
+
+
 init()
 
-const colors = [
-    '#1AF07B',
-    '#1AF0DD',
-    '#337670',
-    '#456ADC',
-    '#6A7BAF',
-    '#A96AAF',
-    '#F50A8A',
-    '#F5D50A',
-    '#58101B',
-    '#FF0228',
-    '#FFE402'
-]
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -52,15 +52,41 @@ function getRandomIntInclusive(min, max) {
   }
 
 async function init() {
-    const response = await topic.index();
+    const response = await dashboard.index();
     if(response){
-        fillTable(response)
+      index(response)
     }
 
 }
 
+function index (response){
+
+  let table = document.getElementById("app");
+  let row = '';
+  response.forEach(element => {
+      row += `
+    <div class="col-md-4">
+        <div class="card">
+        <div class="card-header">
+          ${element.dashboard_name}
+        </div>
+        <div class="card-body">
+          <a href="/dashboard?dashboard=${element.id}" class="btn btn-primary">Ver</a>
+        </div>
+      </div>
+    </div>`
+  });
+  
+  table.innerHTML = row;
+
+}
+
+
+
+
+
 function fillTable(response) {
-    let table = document.getElementById("topics_table");
+  /*   let table = document.getElementById("topics_table");
     let row = '';
     response.forEach(element => {
         row += `
@@ -72,100 +98,8 @@ function fillTable(response) {
     });
     var tBody = table.getElementsByTagName('tbody')[0];
     tBody.innerHTML = row;
-    fillChart(response);
+    fillChart(response); */
    // drawChart(response);
 }
 
 
-
-
-
-function fillChart(response) {
-    var chartExist = Chart.getChart("chartdiv"); // <canvas> id
-    if (chartExist != undefined)  {    
-      chartExist.destroy();     
-    }
-    let labels = [];
-    let xdata = [];
-    let datasets = [];
-    let dataS = [];   
-    response.forEach(element => {    
-      if(element.topic_name!='mgtic/cpu'){
-        datasets[element.topic_name] = [];
-        labels.push(element.date);
-      }                      
-    }); 
-  for (const key in datasets) {
-    console.log("yes",key);
-        if (Object.hasOwnProperty.call(datasets, key)) {
-            const element = datasets[key];
-            xdata=[];            
-            response.find(function (dataset) {
-                if(key == dataset.topic_name){
-                    xdata.push(dataset.value);                     
-                }   else{
-                    xdata.push(0); 
-                }          
-            });
-            let color = getRandomIntInclusive(0, colors.length-1);
-            dataS.push({
-                label: key,
-                backgroundColor: colors[color],
-                borderColor: colors[color],
-                data: xdata,
-              });      
-        }
-    }  
-
-    const data = {
-        labels: labels,
-        datasets: dataS
-      };
-    
-      const config = {
-        type: 'line',
-        data: data,
-        options: {}
-      };
-
-      const myChart = new Chart(
-        document.getElementById('chartdiv'),
-        config
-      );
-}
-
-google.charts.load('current', {'packages':['gauge']});
-//google.charts.setOnLoadCallback(drawChart);
-
-function drawChart(topic) {
-    console.log(topic);
-  var data = google.visualization.arrayToDataTable([
-    ['label', 'Data'],    
-    ['CPU', topic.value],
-   
-  ]);
-
-  var options = {
-    width: 600, height: 220,
-    redFrom: 90, redTo: 120,
-    yellowFrom:75, yellowTo: 90,
-    minorTicks: 5
-  };
-
-  var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-
-  chart.draw(data, options);
-
-  /* setInterval(function() {
-    data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
-    chart.draw(data, options);
-  }, 3000); */
- /*  setInterval(function() {
-    data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
-    chart.draw(data, options);
-  }, 5000);
-  setInterval(function() {
-    data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
-    chart.draw(data, options);
-  }, 26000); */
-}
