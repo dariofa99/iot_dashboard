@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async function(event) {
       var modal = new bootstrap.Modal(document.getElementById("modal_create_chart"), {});
       var form = document.querySelector('#contentCreateForm');
       let row = '';
-      console.log(modal);
+      //console.log(modal);
       let table = form.querySelector("table[id='topics_table']");           
       topics.forEach(element => {             
        row += `
@@ -73,12 +73,11 @@ document.addEventListener("DOMContentLoaded", async function(event) {
       document.body.addEventListener('click', editChart);
       document.body.addEventListener('change', changeColor);    
       document.body.addEventListener('click', deleteChart);   
-      document.body.addEventListener('change', habilityColor); 
-          
+      document.body.addEventListener('change', habilityColor);           
       init(); 
 
 })
-const pusher = new Pusher("http://localhost:3000");
+const pusher = new Pusher("http://3.18.87.25:3000");
 await pusher.on("MyChannel",function(data) {
     index(data.response);
 });
@@ -121,7 +120,7 @@ async function habilityColor({target}) {
     let topic_id = target.getAttribute('data-topic');
     let content = document.querySelector('#contentCreateForm');
     let color = content.querySelector("input[id='color-"+topic_id+"']");
-    console.log(color);
+    //console.log(color);
     if(target.checked){
      color.removeAttribute("disabled")
     }else{
@@ -160,15 +159,27 @@ async function editChart({target}) {
       var form = document.querySelector('#contentEditChart')
       let row = '';
       let table = form.querySelector("table[id='topics_table']"); 
-          
+       
       topics.forEach(element => {        
-        const result = dashboard.chart_topics.find(({ topic }) => topic.id === element.id);     
-       row += `
-        <tr>
-            <td>${element.topic_name}</td>
-            <td><input data-id="${result != undefined ? result.id : '0'}" data-dash="${dashboard.id}" data-topic="${element.id}" type="color" class="form-control form-control-color change_color_input" data-color="${element.id}" id="color-${element.id}" value="${result != undefined ? result.color : '#000000'}" title="Selecciona un color"></td>
-            <td><input data-id="${result != undefined ? result.id : '0'}" data-dash="${dashboard.id}" data-topic="${element.id}" class="check_sync_topic" type="checkbox" ${result != undefined ? 'checked' : ''} value="${result != undefined ? '1' : '0'}"></td>
-        </tr>`
+        const result = dashboard.chart_topics.find(({ topic }) => topic.id === element.id);  
+        if(dashboard.chart.chart_type!="gauges"){
+          row += `
+          <tr>
+              <td>${element.topic_name}</td>
+              <td><input data-id="${result != undefined ? result.id : '0'}" data-dash="${dashboard.id}" data-topic="${element.id}" type="color" class="form-control form-control-color change_color_input" data-color="${element.id}" id="color-${element.id}" value="${result != undefined ? result.color : '#000000'}" title="Selecciona un color"></td>
+              <td><input data-id="${result != undefined ? result.id : '0'}" data-dash="${dashboard.id}" data-topic="${element.id}" class="check_sync_topic" type="checkbox" ${result != undefined ? 'checked' : ''} value="${result != undefined ? '1' : '0'}"></td>
+          </tr>`;
+        }else{
+          row += `
+          <tr>
+              <td>${element.topic_name}</td>
+              <td><input data-id="${result != undefined ? result.id : '0'}" data-dash="${dashboard.id}" data-topic="${element.id}" type="color" class="form-control form-control-color change_color_input" data-color="${element.id}" id="color-${element.id}" value="${result != undefined ? result.color : '#000000'}" title="Selecciona un color"></td>
+              <td><input name="color" data-id="${result != undefined ? result.id : '0'}" data-dash="${dashboard.id}" data-topic="${element.id}" class="check_sync_topic" type="radio" ${result != undefined ? 'checked' : ''} value="${result != undefined ? '1' : '0'}"></td>
+          </tr>`;
+        }
+      
+
+
       });
       var tBody = table.getElementsByTagName('tbody')[0];
       tBody.innerHTML = row;
@@ -213,6 +224,8 @@ async function init() {
         });
       table.innerHTML = row;
       index(init_data)
+      document.getElementById("dashboard_id").value = init_data.token
+      //console.log(init_data);
     }
      
 }
@@ -377,7 +390,7 @@ function fillTable(response) {
 
 
 function fillChart(data,element) {
-  //console.log(data);
+  ////console.log(data);
     var chartExist = Chart.getChart("chartdiv-"+element.id); // <canvas> id
     if (chartExist != undefined)  {    
        chartExist.destroy();     
@@ -422,7 +435,7 @@ function drawChart(topic) {
         gauge_data = google.visualization.arrayToDataTable([
           ['Label', 'Data'],    
           [topic.chart_topics[0].topic.topic_name, parseInt(last_value.value)]])
-console.log(gauge_data);
+//console.log(gauge_data);
         charts_.createOrUpdateChart('chartdiv-'+topic.id, topic.chart.chart_type, gauge_data, options)
 
     }else{

@@ -13,11 +13,11 @@
         <div class="form-row align-items-center">
             <div class="col-sm-5 my-1">
             <label for="cols">Columnas</label>
-            <input type="text" class="form-control  form-control-sm" id="cols" name="cols" placeholder="Columnas">
+            <input type="text" required class="form-control  form-control-sm" id="cols" name="cols" placeholder="Columnas">
             </div>
             <div class="col-sm-5 my-1">
             <label for="chart_id">Chart</label>
-            <select class="form-control form-control-sm" name="chart_id" id="chart_id" placeholder="Seleccione">
+            <select require class="form-control form-control-sm" name="chart_id" id="chart_id" placeholder="Seleccione">
                 
             </select>
             </div> 

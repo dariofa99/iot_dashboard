@@ -15,21 +15,21 @@ var modal = new bootstrap.Modal(document.getElementById("create_dashboard"), {})
  })
 
 
-   /*  const formElement = document.getElementById("myTopicCreateForm");
+  const formElement = document.getElementById("myFormCreateDashboard");
     formElement.addEventListener("submit",async function(e) {  
-        e.preventDefault()
+        e.preventDefault();
+        $("#myFormCreateDashboard input[type=submit]").prop('disable',true)
         const formData = new FormData(formElement);             
-        let response = await topic.store(new URLSearchParams(formData));    
+        let response = await dashboard.store(new URLSearchParams(formData)); 
+        $('#create_dashboard button[type=button]').click() 
+        init()   ;
+        
     });
-    const btn_delete_data = document.getElementById("btn_delete_data");;
-    btn_delete_data.addEventListener("click",async function (e) {
-        let conf= confirm("Esta seguro de eliminar los registros?");
-        if(conf){
-            let response = await topic.deleteAll(); 
-        }
-    }) */
+
+    document.body.addEventListener('click', deleteDashboard);  
+    
 })();
-const pusher = new Pusher("http://localhost:3000");
+const pusher = new Pusher("http://3.18.87.25:3000");
 /* await pusher.on("MyChannel",function(data) {
     if(data.topic.topic_name == "mgtic/cpu"){
         drawChart(data.topic);
@@ -38,7 +38,7 @@ const pusher = new Pusher("http://localhost:3000");
     }
 }); */
 await pusher.on("MyChannelDelete",function(data) {
-    fillTable(data.response);  
+  init();  
 });
 
 
@@ -65,13 +65,20 @@ function index (response){
   let row = '';
   response.forEach(element => {
       row += `
-    <div class="col-md-4">
+    <div class="col-md-4 mt-2">
         <div class="card">
         <div class="card-header">
           ${element.dashboard_name}
         </div>
         <div class="card-body">
-          <a href="/dashboard?dashboard=${element.id}" class="btn btn-primary">Ver</a>
+        <div class="row">
+          <div class="col-md-8">
+          <a href="/dashboard?dashboard=${element.id}" class="btn btn-primary">Ver</a>         
+          
+          <button type="button" data-id="${element.id}" id="button_delete_${element.id}" class="btn btn-danger button_delete">Eliminar</button>         
+          </div>
+        </div>
+         
         </div>
       </div>
     </div>`
@@ -85,21 +92,14 @@ function index (response){
 
 
 
-function fillTable(response) {
-  /*   let table = document.getElementById("topics_table");
-    let row = '';
-    response.forEach(element => {
-        row += `
-        <tr>
-            <td>${element.topic_name}</td>
-            <td>${element.value}</td>
-            <td colspan="2">${element.date}</td>
-        </tr>`
-    });
-    var tBody = table.getElementsByTagName('tbody')[0];
-    tBody.innerHTML = row;
-    fillChart(response); */
-   // drawChart(response);
+async function deleteDashboard({target}) {
+  if (target.classList.contains('button_delete')) {     
+    let confirmation = confirm("Estas seguro");      
+    if(confirmation){     
+      let id = target.getAttribute('data-id');   
+      let response = await dashboard.delete(id);      
+    }    
+}
 }
 
 

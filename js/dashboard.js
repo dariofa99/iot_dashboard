@@ -11,7 +11,8 @@ export class Dashboard {
         const response = await fetch(BASE_URL+'api/v1/dashboards', {
             method: 'GET',
             headers: new Headers({
-                'Content-type': 'application/json',
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
             }), 
             mode: 'cors'
         });
@@ -27,10 +28,11 @@ export class Dashboard {
 
     async store(formData) {
         
-        const response = await fetch(BASE_URL+'api/v1/topics', {
+        const response = await fetch(BASE_URL+'api/v1/dashboards', {
             method: 'POST',
             headers: new Headers({
-                'Content-type': 'application/json',
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
             }), 
             body:formData,
             mode: 'cors'
@@ -39,17 +41,18 @@ export class Dashboard {
             const message = `An error has occured: ${response.status}`;
             throw new Error(message);
         }
-        const topics = await response.json();
-        return topics;
+        
+        return await response.json();
     }
 
-    async deleteAll() {
+    async delete(id) {
         
-        const response = await fetch(BASE_URL+'/api/v1/topics/delete/all', {
-            method: 'GET',
-            /* headers: new Headers({
-                'Content-type': 'application/json',
-            }) */            
+        const response = await fetch(BASE_URL+'api/v1/dashboards/'+id, {
+            method: 'DELETE',
+             headers: new Headers({
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+            })      ,    
             mode: 'cors'
         });
         if (!response.ok) {
