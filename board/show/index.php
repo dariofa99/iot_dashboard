@@ -14,7 +14,7 @@
 <?php include("../../layout/navbar.php") ?>
 
   <div class="container-fluid mt-1">
- 
+  
     <div class="row" id="app">
     
     

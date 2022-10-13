@@ -10,6 +10,7 @@ const dashboard = new Dashboard();
 const dashboard_chart = new DashboardChart();
 const chart_ = new MyChart();
 const charts_ = new Charts();
+const pusher = new Pusher("http://3.18.87.25:3000");
 let topics = [];
 let charts = [];
 let init_data = [];
@@ -77,13 +78,14 @@ document.addEventListener("DOMContentLoaded", async function(event) {
       init(); 
 
 })
-const pusher = new Pusher("http://localhost:3000");
+
 
 await pusher.on("MyChannel",function(data) {
+  console.log(data);
     index(data.response);
 });
-await pusher.on("MyChannelDelete",function(data) {
-    fillTable(data.response);  
+pusher.on("MyChannelDelete",function(data) {
+   console.log(data);
 });
 
 async function deleteChart({target}) {

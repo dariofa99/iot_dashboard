@@ -8,9 +8,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 async function init() {
   const response = await board.index();
+  const prueba = await board.prueba(1);
   if(response){
     index(response)
   }
+  console.log(prueba);
 
 }
 

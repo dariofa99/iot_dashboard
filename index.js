@@ -28,7 +28,7 @@ var modal = new bootstrap.Modal(document.getElementById("create_dashboard"), {})
     document.body.addEventListener('click', deleteDashboard);  
     
 })();
-const pusher = new Pusher("http://localhost:3000");
+const pusher = new Pusher("http://3.18.87.25:3000");
 /* await pusher.on("MyChannel",function(data) {
     if(data.topic.topic_name == "mgtic/cpu"){
         drawChart(data.topic);
@@ -36,9 +36,9 @@ const pusher = new Pusher("http://localhost:3000");
         fillTable(data.response);
     }
 }); */
-await pusher.on("MyChannelDelete",function(data) {
+/* await pusher.on("MyChannelDelete",function(data) {
   init();  
-});
+}); */
 
 
 init()

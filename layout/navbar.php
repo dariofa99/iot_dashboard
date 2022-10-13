@@ -6,7 +6,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-    <?php if(!isset($_REQUEST['dashboard']) and (($_SERVER['REQUEST_URI']) != '/board/')) {?>
+    <?php if(!isset($_REQUEST['dashboard']) and !isset($_REQUEST['board']) and (($_SERVER['REQUEST_URI']) != '/board/') and (($_SERVER['REQUEST_URI']) != '/board/show/')) {?>
        <li class="nav-item">
         <a class="nav-link" href="#" id="btn_create_dashboard">Nuevo Dashboard   </a>
       </li>
