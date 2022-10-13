@@ -6,9 +6,9 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-    <?php if(!isset($_REQUEST['dashboard'])) {?>
+    <?php if(!isset($_REQUEST['dashboard']) and (($_SERVER['REQUEST_URI']) != '/board/')) {?>
        <li class="nav-item">
-        <a class="nav-link" href="#" id="btn_create_dashboard">Nuevo Dashboard</a>
+        <a class="nav-link" href="#" id="btn_create_dashboard">Nuevo Dashboard   </a>
       </li>
       <?php }?>
 
@@ -17,8 +17,10 @@
         <a class="nav-link" href="#" id="btn_create_chart">Agregar Chart</a>
       </li>
       <?php }?>
-   
-      
+
+      <li class="nav-item">
+        <a class="nav-link" href="/board">Boards</a>
+      </li>     
     </ul>
     <?php if(isset($_REQUEST['dashboard'])) {?>
     <form style="width: 290px;">

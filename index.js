@@ -1,8 +1,7 @@
+import { Pusher } from "./public/js/pusher.js"; 
+import { Topic } from "./public/js/topics.js";
+import { Dashboard } from "./public/js/dashboard.js";
 
-import { User } from "./js/users.js";
-import { Pusher } from "./js/pusher.js";
-import { Topic } from "./js/topics.js";
-import { Dashboard } from "./js/dashboard.js";
 const topic = new Topic();
 const dashboard = new Dashboard();
 
@@ -29,7 +28,7 @@ var modal = new bootstrap.Modal(document.getElementById("create_dashboard"), {})
     document.body.addEventListener('click', deleteDashboard);  
     
 })();
-const pusher = new Pusher("http://3.18.87.25:3000");
+const pusher = new Pusher("http://localhost:3000");
 /* await pusher.on("MyChannel",function(data) {
     if(data.topic.topic_name == "mgtic/cpu"){
         drawChart(data.topic);
@@ -73,8 +72,7 @@ function index (response){
         <div class="card-body">
         <div class="row">
           <div class="col-md-8">
-          <a href="/dashboard?dashboard=${element.id}" class="btn btn-primary">Ver</a>         
-          
+          <a href="/dashboard?dashboard=${element.id}" class="btn btn-primary">Ver</a>              
           <button type="button" data-id="${element.id}" id="button_delete_${element.id}" class="btn btn-danger button_delete">Eliminar</button>         
           </div>
         </div>

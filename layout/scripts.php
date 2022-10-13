@@ -5,9 +5,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
   integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="../js/plugins/new-push/io.js"></script>
-<script type="module" src="../js/pusher.js"></script>
+<script src="../../public/plugins/new-push/io.js"></script>
+<script type="module" src="../../public/js/pusher.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-<script src="../js/plugins/fontawesome-free-6.2.0/js/all.min.js"></script>
+<script src="../../public/plugins/fontawesome-free-6.2.0/js/all.min.js"></script>

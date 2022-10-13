@@ -11,7 +11,9 @@ export class Topic {
         const response = await fetch(BASE_URL+'api/v1/topics', {
             method: 'GET',
             headers: new Headers({
-                'Content-type': 'application/json',
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "Access-Control-Allow-Origin":"*"
             }), 
             mode: 'cors'
         });

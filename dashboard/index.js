@@ -1,10 +1,10 @@
 
-import { Pusher } from "../js/pusher"; 
-import { Topic } from "../js/topics"; 
-import { Dashboard } from "../js/dashboard";
-import { DashboardChart } from "../js/dashboard_chart";
-import { Chart as MyChart } from "../js/charts" ;
-import { Charts } from "../js/plugins/charts/charts";
+import { Pusher } from "../public/js/pusher"; 
+import { Topic } from "../public/js/topics"; 
+import { Dashboard } from "../public/js/dashboard";
+import { DashboardChart } from "../public/js/dashboard_chart";
+import { Chart as MyChart } from "../public/js/charts" ;
+import { Charts } from "../public/plugins/charts/charts";
 const topic = new Topic();
 const dashboard = new Dashboard();
 const dashboard_chart = new DashboardChart();
@@ -77,7 +77,8 @@ document.addEventListener("DOMContentLoaded", async function(event) {
       init(); 
 
 })
-const pusher = new Pusher("http://3.18.87.25:3000");
+const pusher = new Pusher("http://localhost:3000");
+
 await pusher.on("MyChannel",function(data) {
     index(data.response);
 });
@@ -226,8 +227,7 @@ async function init() {
       index(init_data)
       document.getElementById("dashboard_id").value = init_data.token
       //console.log(init_data);
-    }
-     
+    }     
 }
 
 function index (response){
@@ -241,10 +241,6 @@ function index (response){
       datasets = drawChart(element);
     }
   });
- 
- 
-   
-
 }
 
 
