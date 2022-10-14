@@ -350,7 +350,7 @@ function createGaugeChart(element) {
           </button>
           <div class="dropdown-menu dropdown-menu-right">
             <button data-id="${element.id}" class="dropdown-item edit_chart" type="button">Editar</button>
-            <button class="dropdown-item" type="button">Eliminar</button>            
+            <button class="dropdown-item btn_delete_chart" type="button">Eliminar</button>            
           </div>
         </div>
         </div>
